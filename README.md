@@ -175,7 +175,7 @@ Further calibration and regression frames — including the laboratory capture u
 - The wobble anchor assumes a floor-contact body; a floating subject currently reduces lean to near-rigid translation.
 - Internal structure volumes are spherical and origin-centred.
 - Preset look application resolves a single renderer, so a multi-part subject cannot yet be repainted as one.
-- No GPU benchmark is claimed; performance work is limited to recorded apply-cost samples, one of which is not yet attributed.
+- No GPU benchmark is claimed. The only recorded numbers are preset apply-cost samples; the cost of the new binding layer is deliberately not attributed until the same revision is measured with it present and absent.
 - The first fully validated subject is still the jelly; second-subject validation is the open research step.
 
 ## Next research step
