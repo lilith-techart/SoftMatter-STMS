@@ -1,41 +1,59 @@
 # STMS — Status
 
-更新时间：2026-10-07。
+Updated 2026-10-07. **Overall: research prototype, in development.**
 
-**Overall: Research Prototype / WIP.**
+Status vocabulary is fixed: `PASS` (implemented + recorded acceptance run) · `PARTIAL` (implemented, named untested path) · `WIP` (actively being built) · `FAIL` (attempted and rejected) · `NOT STARTED` · `UNVERIFIED` (exists, no evidence it works).
 
 ## Current milestone
 
-**M2-A Phase 1 — Jellyfish Generalization Foundation.**
+**M2-A Phase 1 — generalization foundation.** The milestone question is whether the existing architecture can carry a second, structurally different soft translucent subject without a second shader core.
 
-The previous public summary treated all M2-A work as generic WIP. The latest canonical audit is more specific: the **subject-binding layer has been implemented and regression-verified**, while jellyfish geometry/material/capture acceptance is still incomplete.
+M2-A is no longer a single "WIP". It splits:
 
-## Implemented / verified
+- **Generalization infrastructure — PARTIAL / verified-inert.** An explicit subject-binding layer (renderer membership, roles, optional per-renderer body metrics) is implemented across the motion, contact, fracture-role, breakage, bubble-field and internal-noise consumers, with the pre-existing fallback path preserved. Headless verification: 0 C# errors, 0 shader errors, 0 exceptions; preset live re-apply 0 failures in two independent processes; fracture lifecycle gate `PASS`. The binding is therefore proven *not to change* current behaviour — the positive path on a real second subject is still untested, which is why this row is `PARTIAL` and not `PASS`.
+- **Jellyfish visual subject — WIP / UNVERIFIED.** Bell mesh generation code exists as a local draft only: it has not been imported or compiled by the editor, has no call sites, and no geometry validation has been run. There are no tentacles, no jellyfish material or motion profile, and **zero captured jellyfish frames**. No jellyfish image is published here.
 
-- jelly optical prototype: analytic thickness proxy, Beer–Lambert absorption, screen-space refraction, artistic back-scattering approximation, wet highlight;
-- spring motion and local contact deformation;
-- single-mesh visual soft tear / regeneration and its damage/recovery lifecycle;
-- Material / Motion Profile and Preset parameterization;
-- M2-A explicit subject binding with renderer roles and per-renderer body metrics for the principal runtime consumers;
-- compile/import verification: 0 C# errors, 0 Shader errors, 0 Exceptions;
-- M1-F preset live re-apply regression: failures = 0 in two independent processes;
-- M1-G fracture lifecycle regression: gate = PASS.
+## Subsystem matrix
 
-## WIP
+| Subsystem | Status | Evidence basis |
+| --- | --- | --- |
+| Optical core (single pass, one CBUFFER) | PASS | M0-A calibration sweeps; re-run in later regression passes |
+| Analytic thickness proxy | PARTIAL | Validated as a proxy on convex closed bodies; boundary recorded for thin/open tissue |
+| Beer–Lambert absorption | PASS | M0-A absorption variant captures, authored per material profile |
+| Screen-space refraction | PASS | Checker calibration captures; limitation recorded, not solved |
+| Wet highlight | PASS | Specular variant captures, hero frames |
+| Artistic back-scattering | PASS (approximation) | Scatter variant captures; explicitly not physical SSS |
+| Spring motion | PASS | M1-A damped sweeps, curve CSVs, recorded GIF/MP4 per profile |
+| Drag / collision interaction | PASS | M1-B grab → drag → overshoot → settle sequence |
+| Local contact deformation | PASS | M1-C directional contact captures + containment checks |
+| Damage lifecycle | PASS | M1-D press/damage/recovery timeline with per-frame CSV |
+| Visual soft tear + regeneration | PASS | M1-G lifecycle frames, debug channels, 20-frame lifecycle gate |
+| Soft-tear first-glance readability | FAIL (parked) | Measured on the broken frame: no candidate produced a readable central opening; canonical profile left unchanged, awaiting human review |
+| Material / motion profile authoring | PASS | Authored profile assets + identity comparisons |
+| Preset system | PASS | M1-F preset identity, lineup, determinism and live re-apply CSVs |
+| Subject binding | PARTIAL | Implemented; verified inert (compile, preset, fracture regressions) |
+| Multi-renderer distribution (motion/contact/fracture) | PASS | The jelly rig already drives 5–8 renderers through one push loop |
+| Multi-renderer preset look application | PARTIAL | Resolves a single renderer; deliberately deferred to avoid changing frozen apply semantics |
+| Jelly baseline (case study) | PASS | Full M0-A → M1-G evidence chain, used as the regression reference |
+| Jellyfish bell | UNVERIFIED | Local draft code only; never compiled, validated or rendered |
+| Jellyfish tentacles | NOT STARTED | No code |
+| Jellyfish material profile | NOT STARTED | No asset |
+| Jellyfish motion | NOT STARTED | No profile, no capture |
+| Jellyfish capture | NOT STARTED | Zero frames |
+| Second-subject generalization | WIP | The remaining work of this milestone |
 
-- jellyfish bell / tentacle geometry is not yet accepted;
-- no validated jellyfish material/hero capture is published;
-- multi-renderer preset look application remains deferred;
-- subject-specific motion weighting, normal/thickness validation and capture tooling still need the second-subject pass.
+## Recorded generalization boundaries
 
-An uncompiled local jellyfish geometry draft is not counted as a completed capability.
+- Transparent siblings cannot refract each other: the opaque texture is captured before transparents render.
+- The motion anchor model is a floor-contact model; geometry below the anchor receives no lean, so a floating subject behaves as near-rigid translation unless anchors are authored per renderer.
+- Internal structure volumes are spherical and origin-centred.
+- The thickness proxy assumes a convex closed body; closed tubes are its best case, open ribbons its worst.
+- Thin or open-sheet tissue would need two-sided normal handling that the single `Cull Back` pass does not provide.
 
-## Generalization boundaries
+## Accuracy boundaries
 
-The shader core, Beer–Lambert absorption, spring oscillator, preset schema and MPB material path are reusable on current evidence. Remaining geometry-specific assumptions include the floor-contact motion anchor, spherical/origin-centred internal-structure volumes, convex-subject thickness assumptions and single-renderer look application.
+Scattering is not physical SSS. Thickness is not a measured optical path. Refraction is screen-space. Visual tear is not topology fracture. The system is not FEM soft-body simulation. No production-readiness, cross-engine compatibility, or GPU benchmark claim is made.
 
-## Limitations
+## Distribution
 
-Scattering is not physical SSS. The thickness term is an analytic proxy, not a measured optical path. Screen-space refraction cannot provide complete inter-object transparent refraction. Visual soft tear does not change mesh topology and is not FEM physical simulation.
-
-Source/project distribution is not currently provided. This public repository remains showcase-only and does not contain the complete engine project, logs, internal reports or a source license.
+Showcase only: selected documentation and rendered evidence. The engine project, source, packages, logs, internal research archives and agent data are not distributed, and no source license is granted.
