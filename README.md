@@ -1,122 +1,195 @@
 # SoftMatter / STMS
 
-**Soft Material / Technical Art / Real-time Rendering Research System** · Tuanjie / Unity URP
+**Soft Material · Technical Art · Real-time Rendering Research System** — Tuanjie / Unity URP
 
-STMS explores how one reusable real-time system can represent **soft translucent materials across different subjects** instead of hard-coding one jelly look. The current evidence-backed baseline is the purple konjac jelly; the active milestone is **M2-A Jellyfish Generalization Foundation**.
+*软半透明材质的可复用实时渲染与形变研究系统。*
 
-![STMS procedural jelly optical study: front, high-angle and back views](media/jelly-optics-cover.png)
+<p align="center">
+  <img src="media/jelly-hero.png" alt="STMS validated hero render: translucent purple jelly with internal pulp chunks, wet specular highlights and soft back-scattering on a neutral studio backdrop" width="880">
+</p>
 
-## Current System
+STMS asks one research question: **can a single real-time translucent-material system describe soft, wet, light-carrying matter across different subjects** — instead of hand-tuning one shader for one look?
 
-The current system is evidence-backed for:
+The system is built around a single shader core plus data-driven profiles, and every visual claim is backed by a reproducible calibration capture: deterministic frame sets, debug channels, and regression runs in independent editor processes. The konjac jelly is the validated baseline case study; the current research step is generalizing the same system to a structurally different second subject (jellyfish).
 
-- parameterized translucent optics: analytic thickness proxy, Beer–Lambert absorption, screen-space refraction, wet highlight and artistic back-scattering;
-- spring-based whole-body motion and local contact deformation;
-- damage / recovery lifecycle driving single-mesh visual soft tear and regeneration;
-- Material Profile / Motion Profile / Preset authoring;
-- explicit multi-renderer **subject binding** for motion, contact, fracture-role, breakage, bubble-field and internal-noise target resolution;
-- debug / calibration capture used to separate appearance claims from implementation claims.
+**Status: research prototype, actively developed.** Verified capabilities and open work are separated below, and approximations are named rather than hidden.
 
-The goal is not a single “jelly shader”, but a reusable soft-material research framework whose assumptions can be exposed, tested and replaced.
+---
 
-## Latest Milestone
+## Capability status
 
-**M2-A Phase 1 — Jellyfish Generalization Foundation: subject binding implemented and regression-verified.**
+| Capability | Status | What the evidence covers |
+| --- | --- | --- |
+| Single-pass translucent optical core | **Verified** | Absorption / refraction / highlight / scattering calibrated against debug views and multi-view captures |
+| Beer–Lambert absorption | **Verified** | Parameter sweep captures, per-material authored transmittance |
+| Screen-space refraction | **Verified · bounded** | Checker calibration frames; cannot reconstruct off-screen data or inter-transparent refraction |
+| Analytic thickness proxy | **Partial** | Correct for convex closed bodies and closed tubes; not a measured optical path |
+| Artistic back-scattering | **Verified · approximation** | Reads as soft translucent matter; **not** physical subsurface scattering |
+| Spring whole-body motion | **Verified** | Deterministic oscillator, damped-sweep curves, recorded motion captures |
+| Drag / collision interaction | **Verified** | Grab, drag, overshoot, settle sequence captures |
+| Local contact deformation | **Verified** | Directional dent + surrounding bulge, containment checks |
+| Damage / recovery lifecycle | **Verified** | Press → damage → recovery timeline with per-frame CSV |
+| Visual soft tear + regeneration | **Verified** | Canonical fracture profile: necking, seam, two-lobe visual separation, closing |
+| Soft-tear first-glance readability | **Failed · parked** | Measured target not met on the broken frame; kept as a documented limitation, not silently fixed |
+| Material / Motion profile + preset system | **Verified** | Four authored presets, identity comparison, runtime re-apply regression |
+| Subject binding (renderer roles, per-renderer body metrics) | **Partial** | Implemented and regression-proven *not to change* existing behaviour; positive path on a second subject still untested |
+| Multi-renderer look application | **Partial** | Motion / contact / fracture already drive 5–8 renderers; preset look still resolves one renderer |
+| Jellyfish bell geometry | **Unverified** | Generation code drafted locally; never imported, compiled, validated or rendered |
+| Jellyfish tentacles / material / motion / capture | **Not started** | No code, no frames |
+| Second-subject end-to-end generalization | **In progress** | The actual goal of the current milestone |
 
-The latest canonical evidence records a new subject declaration layer with renderer roles and per-renderer body metrics, while keeping the pre-M2-A fallback path intact. Headless verification reported:
+*Verified = implemented plus a recorded acceptance run. Partial = implemented with a named untested path. Failed · parked = measured and rejected, deliberately not promoted.*
 
-- compile / import: **0 C# errors, 0 Shader errors, 0 Exceptions**;
-- M1-F preset live re-apply: **0 failures** in two independent processes;
-- M1-G fracture lifecycle regression: **gate = PASS**.
+---
 
-This upgrades the old public statement “M2A generalization = WIP” into a more precise state: **generalization infrastructure is now partially implemented and verified; jellyfish geometry/material/capture are not yet validated.**
+## Current system
 
-## Material / Optical Model
+```mermaid
+flowchart LR
+  subgraph Authoring["Data (no code edits)"]
+    P[Material profiles]
+    M[Motion profiles]
+    S[Preset sets]
+    F[Fracture / contact / bubble profiles]
+  end
 
-STMS uses an analytic convex-subject thickness proxy to modulate optical response, Beer–Lambert absorption for transmittance, screen-space refraction for the visible background, and an artistic back-scattering term for soft translucent readability.
+  subgraph Runtime["Runtime layer"]
+    B[Subject binding<br/>renderer roles + body metrics]
+    C[Motion · contact · fracture<br/>breakage · bubbles · noise]
+    A[Profile / preset appliers]
+  end
 
-![Analytic thickness proxy debug: brighter centre, thinner rim](media/thickness-proxy.png)
+  subgraph Render["Single shader core"]
+    SH[STMS/Core — one pass<br/>thickness → absorption → refraction<br/>→ highlight → scattering]
+    MPB[MaterialPropertyBlock<br/>per-renderer, no shared state]
+  end
 
-![Screen-space refraction against a procedurally generated checker](media/refraction-debug.png)
+  H[Calibration harness<br/>deterministic captures + debug views]
 
-These are rendering models, not measurements of a real optical path. Screen-space refraction also cannot reconstruct off-screen information or full transparent-object inter-refraction.
+  Authoring --> Runtime
+  B --> C
+  C --> MPB
+  A --> MPB
+  MPB --> SH
+  SH --> H
+  H -.->|"evidence: frames, CSV, debug sheets"| Authoring
+```
 
-## Motion & Interaction
+Two structural rules make the system reusable: nothing is written to global shader state or shared materials, and every subsystem resolves its target renderers through one declaration instead of assuming a scene hierarchy. Both are what a second subject depends on.
 
-A spring controller drives squash / lean motion. Local contact adds a dent and surrounding bulge around a contact point, then combines that result with whole-body motion.
+---
 
-Profiles and presets keep look and response data outside the shader core. M2-A adds explicit subject membership and per-renderer metrics so a future multi-part subject does not have to inherit jelly-specific hierarchy assumptions.
+## Latest milestone — M2-A: generalization foundation
 
-![Recorded STMS spring motion, medium profile](media/spring-motion.gif)
+**Research question:** can STMS represent a visually and structurally different soft translucent subject *without* creating a second shader core?
 
-The GIF above is a recorded spring-motion experiment. It is not evidence of jellyfish motion or a full tear lifecycle.
+What this milestone has established so far:
 
-## Damage / Recovery
+- **The optical, motion, preset and fracture models are reusable as-is.** A closed bell plus closed tube tentacles can be fed through the existing core; the tentacle shape is even the analytically favourable case for the thickness proxy.
+- **An explicit subject-binding layer is implemented.** Renderers now declare membership, role (primary shell / secondary tissue / internal / presentation-only) and optional per-renderer body metrics, replacing hierarchy guessing in motion, contact, fracture-role, breakage, bubble-field and internal-noise target resolution.
+- **Regression evidence:** clean compile/import (0 C# errors, 0 shader errors, 0 exceptions), preset live re-apply with 0 failures across two independent processes, and the full fracture lifecycle gate passing — i.e. the binding is proven *inert* for the existing subject.
 
-Damage and recovery are driven as a visual lifecycle. The current tear model produces necking, seam appearance, two-lobe visual separation and regeneration on the same mesh.
+What it has **not** established: any jellyfish visual result. No jellyfish frame has ever been captured, and the bell generation code has not been through a compile or geometry-validation pass yet. That work is deliberately excluded from the published evidence set until it clears the same gates as the jelly.
 
-![Soft-tear debug: partition, seam and regeneration channels](media/soft-tear-debug.png)
+Three limitations are recorded rather than designed away: transparent siblings cannot refract each other in a single screen-space pass; the motion anchor model assumes a floor-contact body; internal structure volumes are spherical and origin-centred.
 
-**Accuracy boundary:** visual soft tear ≠ topology fracture; it does not create a new mesh topology, independent physical fragments, or FEM soft-body simulation.
+---
 
-## Generalization
+## Material and optical model
 
-M2-A asks whether STMS can describe a visually and structurally different soft translucent subject **without creating a second shader core**.
+Thickness is estimated analytically from view-dependent geometry, then drives Beer–Lambert transmittance; refraction samples the captured opaque scene colour; a wet highlight and an artistic back-scatter term carry the read at a glance.
 
-Current evidence says **yes, provisionally**:
+<table>
+  <tr>
+    <td width="50%"><img src="media/thickness-proxy.png" alt="Analytic thickness debug channel: brighter thick centre, thin dark rim" width="100%"></td>
+    <td width="50%"><img src="media/refraction-debug.png" alt="Screen-space refraction tested against a procedurally generated checker backdrop" width="100%"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Analytic thickness proxy — brighter centre, thinner rim</sub></td>
+    <td align="center"><sub>Screen-space refraction against a procedural checker</sub></td>
+  </tr>
+</table>
 
-- the shader core, Beer–Lambert absorption, spring oscillator, preset schema and MPB-based material path remain reusable;
-- explicit subject binding is now implemented for the main runtime consumers;
-- existing jelly preset and fracture evidence still pass after the binding change.
+**Approximation boundary:** thickness is a proxy, not a measured path length. Refraction is screen-space, not physically correct inter-refraction. Scattering is artistic, not subsurface scattering.
 
-What is **not** complete yet:
+## Internal structure and authored identity
 
-- no validated jellyfish hero render is published;
-- jellyfish bell / tentacle geometry has not passed compile + runtime + capture acceptance;
-- the preset look path is still primarily single-renderer and needs a multi-renderer authoring pass;
-- the current motion anchor model is floor-contact oriented;
-- internal bubble / structure volumes are still spherical and origin-centred;
-- thin/open-sheet subjects would need additional two-sided-normal / thickness work.
+The same core carries internal detail: suspended pulp chunks, a volumetric bubble field and low-frequency internal noise, each authored per material rather than baked.
 
-The latest unvalidated jellyfish geometry draft is intentionally excluded from the public evidence set until it passes the same compile, debug and capture gates.
+<p align="center">
+  <img src="media/internal-structure.png" alt="Close-up of the jelly interior: pulp chunks, fine bubbles and internal noise read through the translucent wall" width="700">
+</p>
 
-## Visual Evidence
+Presets package material, motion, contact, breakage, noise and bubble profiles into switchable identities. Four authored presets, same geometry and lighting, no per-preset code:
 
-This showcase keeps the evidence set deliberately small:
+<p align="center">
+  <img src="media/preset-lineup.png" alt="Four STMS presets rendered side by side: clear gel, fruit-filled, cloudy and firm variants differing in tint, transmittance and internal detail" width="880">
+</p>
 
-1. **HERO** — optical comparison cover;
-2. thickness-proxy debug;
-3. screen-space refraction debug;
-4. soft-tear / regeneration debug;
-5. one recorded spring-motion GIF.
+## Motion and interaction
 
-More implementation detail and evidence scope: [Technical overview](docs/technical-overview.md) · [Current status](docs/status.md) · [Media attribution](docs/media-attribution.md).
+A damped spring integrates displacement and lean per frame; local contact adds a directional dent with a surrounding bulge that composes with whole-body motion. Recorded capture, medium profile:
 
-## Current Limitations
+<p align="center">
+  <img src="media/spring-motion.gif" alt="Recorded damped spring motion: the jelly overshoots, reverses and settles" width="620">
+</p>
 
-- scattering is an artistic approximation, **not physical SSS**;
-- thickness is an analytic proxy, not a measured ray path;
-- refraction is screen-space and does not provide full transparent-object mutual refraction;
-- visual tear is shader/deformation driven, **not topology fracture**;
-- the system is **not FEM soft-body simulation**;
-- the first fully validated subject is still the konjac jelly; second-subject visual validation remains active research.
+## Damage and recovery
 
-## Next Research Step
+Damage drives a lifecycle on the *same* mesh: necking, a seam channel, two-lobe visual separation and regeneration. The canonical profile is the one shown; the debug sheet exposes the three channels that drive it.
 
-Complete the first evidence-backed jellyfish subject:
+<table>
+  <tr>
+    <td width="50%"><img src="media/soft-tear.png" alt="Canonical soft tear frame: the jelly necked into two visually separated lobes" width="100%"></td>
+    <td width="50%"><img src="media/soft-tear-debug.png" alt="Debug channels left to right: partition, seam and regeneration" width="100%"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Soft tear, canonical profile</sub></td>
+    <td align="center"><sub>Partition / seam / regeneration debug channels</sub></td>
+  </tr>
+</table>
 
-1. compile and validate the closed bell geometry with consistent winding / normals;
-2. add closed tube tentacles and subject-specific profiles;
-3. verify thickness, normals, motion weighting and renderer-role binding with debug captures;
-4. validate multi-renderer preset look application without regressing the locked jelly evidence;
-5. only then promote a jellyfish frame to the public HERO position.
+**Accuracy boundary:** visual tear is deformation and shading driven. It does not create new mesh topology, independent physical fragments, or FEM soft-body behaviour.
+
+---
+
+## Validated baseline — the jelly case study
+
+The konjac jelly is where each layer was calibrated and accepted, and it remains the reference subject: multi-view optical study, ground-truth comparison against real food jelly, and the regression baseline every later change is checked against.
+
+<p align="center">
+  <img src="media/jelly-optics-cover.png" alt="Three-view optical study of the jelly: front, high angle and back, against a calibration checker backdrop" width="880">
+</p>
+
+Further calibration and regression frames — including the laboratory capture used for sorting and geometry checks — are described in [Technical overview](docs/technical-overview.md).
+
+---
+
+## Current limitations
+
+- Scattering is an artistic approximation, **not** physical SSS.
+- Thickness is an analytic proxy for convex closed bodies, **not** a measured optical path.
+- Refraction is screen-space: no off-screen reconstruction, no inter-transparent refraction.
+- Soft tear is visual separation on one mesh, **not** topology fracture.
+- Motion is a tuned spring oscillator, **not** FEM or continuum soft-body simulation.
+- The wobble anchor assumes a floor-contact body; a floating subject currently reduces lean to near-rigid translation.
+- Internal structure volumes are spherical and origin-centred.
+- Preset look application resolves a single renderer, so a multi-part subject cannot yet be repainted as one.
+- No GPU benchmark is claimed; performance work is limited to recorded apply-cost samples, one of which is not yet attributed.
+- The first fully validated subject is still the jelly; second-subject validation is the open research step.
+
+## Next research step
+
+1. Compile and geometry-validate the closed bell (winding proven by signed volume, split normals at the rim) with debug captures.
+2. Add closed tube tentacles and subject-specific material / motion profiles.
+3. Exercise the subject binding on the positive path: roles, per-renderer metrics, containment of a multi-part subject.
+4. Extend preset look application across the declared renderer set without regressing the locked jelly evidence.
+5. Capture and review a jellyfish frame — and only then promote it to the hero position.
 
 ## Distribution
 
-Source/project distribution is not currently provided. This repository is a **showcase-only** research entry: no full Tuanjie/Unity project, Library/Temp/logs, agent data, internal report archive, third-party asset bundle or unreviewed media is distributed here.
-
-No open-source license has been assigned to the project source.
+Showcase only. This repository publishes selected documentation and rendered evidence; it does not distribute the engine project, source, packages, build caches, logs, internal research archives, agent data or third-party assets. No open-source license is assigned to the project source.
 
 Rendering context: **Tuanjie 2022.3.62t16 / Unity URP 14.2.0-t1**. Compatibility with other engine versions or graphics APIs is not claimed.
 
-[Lilith — Portfolio](https://github.com/lilith-techart)
+**Related:** [Current status](docs/status.md) · [Technical overview](docs/technical-overview.md) · [Media attribution](docs/media-attribution.md) · [Lilith — portfolio](https://github.com/lilith-techart)
