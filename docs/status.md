@@ -4,12 +4,38 @@
 
 **Overall: Research Prototype / WIP.**
 
-**Implemented**：jelly optical prototype、thickness proxy / absorption、refraction、artistic back-scattering approximation、wet highlight、spring motion、local contact deformation、single-mesh visual soft tear / regeneration、Profile / Preset parameterization。已有实现文件与历史运行证据；本次发布只整理展示层。
+## Current milestone
 
-**WIP**：M2A generalization；jellyfish generalization 未完成。不从 subject-binding 草稿推断第二主体已经验证成功。
+**M2-A Phase 1 — Jellyfish Generalization Foundation.**
 
-**Roadmap**：验证第二主体、透明层与局部区域参数的限制；补可读的完整撕裂时序演示；进一步把视觉线索与交互反馈形成研究问题和比较方法。这些均不列为已完成。
+The previous public summary treated all M2-A work as generic WIP. The latest canonical audit is more specific: the **subject-binding layer has been implemented and regression-verified**, while jellyfish geometry/material/capture acceptance is still incomplete.
 
-**Limitations**：解析厚度代理不是测得的真实光程；back scattering 不是 physical SSS；soft tear 不改变 mesh topology，不是 FEM physical simulation。无跨版本/API、最终作品验收或实际用户研究结论。
+## Implemented / verified
 
-Source/project distribution is not currently provided. 这里没有完整 Unity 项目或源码发行，没有新建 LICENSE。
+- jelly optical prototype: analytic thickness proxy, Beer–Lambert absorption, screen-space refraction, artistic back-scattering approximation, wet highlight;
+- spring motion and local contact deformation;
+- single-mesh visual soft tear / regeneration and its damage/recovery lifecycle;
+- Material / Motion Profile and Preset parameterization;
+- M2-A explicit subject binding with renderer roles and per-renderer body metrics for the principal runtime consumers;
+- compile/import verification: 0 C# errors, 0 Shader errors, 0 Exceptions;
+- M1-F preset live re-apply regression: failures = 0 in two independent processes;
+- M1-G fracture lifecycle regression: gate = PASS.
+
+## WIP
+
+- jellyfish bell / tentacle geometry is not yet accepted;
+- no validated jellyfish material/hero capture is published;
+- multi-renderer preset look application remains deferred;
+- subject-specific motion weighting, normal/thickness validation and capture tooling still need the second-subject pass.
+
+An uncompiled local jellyfish geometry draft is not counted as a completed capability.
+
+## Generalization boundaries
+
+The shader core, Beer–Lambert absorption, spring oscillator, preset schema and MPB material path are reusable on current evidence. Remaining geometry-specific assumptions include the floor-contact motion anchor, spherical/origin-centred internal-structure volumes, convex-subject thickness assumptions and single-renderer look application.
+
+## Limitations
+
+Scattering is not physical SSS. The thickness term is an analytic proxy, not a measured optical path. Screen-space refraction cannot provide complete inter-object transparent refraction. Visual soft tear does not change mesh topology and is not FEM physical simulation.
+
+Source/project distribution is not currently provided. This public repository remains showcase-only and does not contain the complete engine project, logs, internal reports or a source license.
