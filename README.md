@@ -1,125 +1,152 @@
-<p align="center"><img src="media/stms-title.svg" width="100%" alt="STMS — Soft Translucent Material System, technical art research title"/></p>
+<div align="center">
 
-<p align="center"><strong>Soft, wet, light-carrying matter — engineered and art-directed in real time.</strong></p>
+<sub>INDEPENDENT TECHNICAL ART RESEARCH · UNITY / TUANJIE · URP</sub>
 
-<p align="center"><sub>Unity / Tuanjie · URP 14.2 · Real-time rendering · Procedural materials · Soft-body interaction</sub></p>
+# SOFTMATTER
 
-<p align="center"><img src="media/jelly-hero.png" width="940" alt="Actual STMS jelly render with translucent purple gel, wet highlights and internal inclusions"/></p>
-<p align="center"><sub>Actual engine capture from the validated Jelly baseline. No synthetic Unity screenshots.</sub></p>
+### A study in light, softness & the urge to touch.
 
-<p align="center">
-  <a href="#the-material">THE MATERIAL</a> ·
-  <a href="#motion--interaction">MOTION</a> ·
-  <a href="#material-identities">PRESETS</a> ·
-  <a href="#m1-h--visual-research">M1-H REVIEW</a> ·
-  <a href="#architecture--technical-evidence">ENGINEERING</a>
-</p>
+**STMS — Soft Translucent Material System**
 
----
+One shader core. Multiple material identities. Motion, interaction, and experiments you can inspect.
 
-## An authored material, not a one-off effect
+<a href="media/m1h/hero-product.png"><img src="media/m1h/hero-product.png" alt="Genuine M1-H clean product capture: translucent purple jelly and suspended inclusions" width="100%"/></a>
 
-**STMS — Soft Translucent Material System** is a reusable technical-art research framework for expressing translucent, deformable matter with one shader core and a set of material, motion, damage, bubble and contact profiles.
+<sub>01 / THE SUBJECT · M1-H Clean Product study · genuine engine-rendered frame · visual selection pending</sub>
 
-> **Research question**  
-> How can one real-time rendering and deformation architecture describe multiple soft, translucent subjects without building a separate shader for each one?
+[Material study](#01--material-study) &nbsp;·&nbsp; [Motion](#02--motion-and-response) &nbsp;·&nbsp; [Four presets](#03--four-material-identities) &nbsp;·&nbsp; [Inside STMS](#04--inside-the-system) &nbsp;·&nbsp; [Research notes](#05--the-honest-research-record)
 
-The first subject is a fruit / konjac jelly. The next subject, a jellyfish, is a separate **in-progress generalization test**, not a published validated visual result.
-
-<table>
-<tr>
-<td width="50%" align="center"><img src="media/internal-structure.png" width="100%" alt="Real close-up of translucency, pulp and internal structure"/><br/><sub><strong>01 / Internal structure</strong><br/>Pulp, volume cues and bubbles inside a translucent shell</sub></td>
-<td width="50%" align="center"><img src="media/jelly-optics-cover.png" width="100%" alt="Real multi-angle optical study"/><br/><sub><strong>02 / Optical study</strong><br/>The same subject across controlled viewpoints</sub></td>
-</tr>
-</table>
-
-## The material
-
-Thickness-driven absorption, screen-space refraction, Fresnel, artistic scattering and a wet highlight form the optical base. The art direction values *thick, coloured gel and light-transmitting edges*, rather than a polished glass ball.
-
-<table>
-<tr>
-<td width="50%" align="center"><img src="media/thickness-proxy.png" width="100%" alt="Real analytic thickness channel"/><br/><sub>Analytic thickness debug</sub></td>
-<td width="50%" align="center"><img src="media/refraction-debug.png" width="100%" alt="Real checker-backed refraction debug"/><br/><sub>Screen-space refraction check</sub></td>
-</tr>
-</table>
-
-<sub>These are authored approximations, **not** measured physical thickness, multi-layer refraction or a physical subsurface-scattering simulation.</sub>
-
-## Motion & interaction
-
-<p align="center"><img src="media/spring-motion.gif" width="700" alt="Actual frame-recorded spring motion showing jelly overshoot and damping"/></p>
-<p align="center"><sub><strong>Recorded engine motion</strong> · spring wobble, overshoot and settle.</sub></p>
-
-The framework includes drag, collision response, local contact, damage/recovery and visual fracture. However, M1-H's closer review found that **local finger contact is not yet convincing in the rendered picture**, even though pressure and contact parameters change. Motion implementation and visual readability are different acceptance tests.
-
-## Material identities
-
-<p align="center"><img src="media/preset-lineup.png" width="940" alt="Actual four-preset jelly comparison in controlled lighting"/></p>
-<p align="center"><sub>Balanced Fruit · Clear Konjac · Cloud Jelly · Firm Clear Gel — shared architecture, authored profiles.</sub></p>
-
-A single core provides different soft-material identities through ScriptableObject profiles and per-renderer material property blocks. Some identities remain too similar at Hero distance in greyscale; the showcase does not claim every preset is instantly distinguishable.
+</div>
 
 ---
 
-## M1-H / Visual research
+## 01 / Material study
 
-<p align="center"><img src="media/m1h-review-map.svg" width="940" alt="Research verdict graphic: presentation improved, microstructure not met, lifecycle partial"/></p>
+**A convincing jelly needs more than transparency.**
 
-**Latest reviewed checkpoint: M1-H — Jelly Final Art & Lifecycle, 2026-10-09.** The engineering capture and human-review package are complete; **final visual approval has not been granted**.
-
-| Goal | What the tests actually established |
-| --- | --- |
-| Clean studio hero | Real captured and reproducible, awaiting artistic selection |
-| Surface micro-detail | **Not met** — all 8 macro candidates missed the project-defined contrast gate |
-| Interior appearance | **Needs polish** — pulp reads as separate blocks; bubbles often as flat rings |
-| Local contact | **Visual limitation** — parameters move; many successive frames do not |
-| Damage → Recovery | **Partial** — real animation and return-to-rest, weak transition readability |
-| Soft fracture → Regeneration | **Partial** — one mesh, no true tear; transparency/sorting boundary remains |
-| Formation / Growth | **Concept only, not accepted** — must not be described as a finished growth system |
-| GPU performance | **Unmeasured** — CPU and synchronization measurements are not GPU times |
-
-The M1-H review intentionally distinguished **successful reproducible captures** from **an approved final look**. See the [visual findings and next-step priorities](docs/m1h-visual-review.md).
-
-> **Visual study disclosure**  
-> The photographs above are selected *existing repository engine captures* and are preserved without beauty retouching. The new M1-H high-fidelity capture package is undergoing a separate provenance-preserving media sync; this page will show those specific frames only after the files themselves are published. The status text already reflects the M1-H evidence.
-
-## Damage / fracture study
+Thickness-dependent colour, absorbed light, a soft rim, wet specular and internal inclusions all have to read together. The real-time pipeline combines an analytic thickness proxy, Beer–Lambert absorption, screen-space refraction, Fresnel and artistic scatter.
 
 <table>
 <tr>
-<td width="50%" align="center"><img src="media/soft-tear.png" width="100%" alt="Real single-mesh visual soft tear"/><br/><sub>Soft tear — single mesh, field-driven visual separation</sub></td>
-<td width="50%" align="center"><img src="media/soft-tear-debug.png" width="100%" alt="Real fracture partition and seam debug views"/><br/><sub>Partition · Seam · Regeneration debug channels</sub></td>
+<td width="50%" valign="top">
+<a href="media/m1h/macro-study.png"><img width="100%" src="media/m1h/macro-study.png" alt="Actual M1-H macro material capture"/></a>
+<strong>01.1 &nbsp; Macro / the material under scrutiny</strong>
+<br><sub>Real engine capture. It exposes the current limits: an overly smooth surface, flat bubble rings and pulp that still reads as separate blocks.</sub>
+</td>
+<td width="50%" valign="top">
+<a href="media/m1h/m1e-vs-m1h.png"><img width="100%" src="media/m1h/m1e-vs-m1h.webp" alt="Honest side-by-side M1-E versus M1-H rendering comparison"/></a>
+<strong>01.2 &nbsp; A more considered presentation</strong>
+<br><sub>Matched M1-E / M1-H comparison. Composition and lighting improved — the microstructure itself did not. <a href="media/m1h/m1e-vs-m1h.png">Open original comparison PNG</a>.</sub>
+</td>
 </tr>
 </table>
 
-The effect does **not** split topology, make separate rigid pieces, or use FEM. The original first-glance tear target was not achieved under the current single-pass unsorted transparent shell constraints. This is a measured limitation, not an unreleased success.
+<sub>**Optical boundary:** thickness is a convex-body approximation; refraction is screen-space; scattering is an artistic term, not physical subsurface scattering.</sub>
 
-## Architecture & technical evidence
+## 02 / Motion and response
+
+**Softness becomes believable when it reacts — and remembers.**
+
+Damped spring wobble, contact, damage and recovery are coupled through data-driven profiles and shader deformation. These are recordings of real Unity/Tuanjie render frames, not generated animation.
+
+<table>
+<tr>
+<td width="50%" align="center" valign="top">
+<img width="100%" src="media/spring-motion.gif" alt="Original engine-captured damped spring wobble animation"/><br>
+<strong>Whole-body wobble</strong><br>
+<sub>The clearest established expression of soft-body motion.</sub>
+</td>
+<td width="50%" align="center" valign="top">
+<img width="100%" src="media/m1h/damage-recovery.gif" alt="M1-H captured damage and recovery animation"/><br>
+<strong>Damage → recovery</strong><br>
+<sub>The loop returns to rest; visible finger pressure still needs a dedicated repair.</sub>
+</td>
+</tr>
+</table>
+
+<div align="center">
+
+[▶ Living Jelly · Cloud Jelly candidate](media/m1h/living-cloud.mp4) &nbsp;·&nbsp; [▶ Damage / Recovery · full MP4](media/m1h/damage-recovery.mp4)
+
+</div>
+
+<details>
+<summary><strong>Experimental soft fracture / regeneration — view actual animation</strong></summary>
+
+<p align="center"><img src="media/m1h/fracture-regeneration.gif" width="680" alt="Real Unity single-mesh fracture and regeneration animation"/></p>
+
+<p align="center"><a href="media/m1h/fracture-regeneration.mp4">Watch the recorded MP4</a></p>
+
+This is **single-mesh deformation and visual separation**, not a topology split or independent physical pieces. The tear remains visually limited by transparent-shell sorting and an abrupt rupture beat.
+
+</details>
+
+## 03 / Four material identities
+
+**One architecture, four personalities.**
+
+Profiles vary absorption, transmission, wet response, motion, bubbles and internal presentation. They share the same STMS core and one controlled camera/light setup.
+
+<a href="media/m1h/preset-gallery.webp"><img width="100%" src="media/m1h/preset-gallery.webp" alt="Actual M1-H four-preset gallery under identical camera and lighting; three viewpoints per preset"/></a>
+
+<div align="center"><sub>Balanced Fruit &nbsp;/&nbsp; Clear Konjac &nbsp;/&nbsp; Cloud Jelly &nbsp;/&nbsp; Firm Clear Gel</sub></div>
+
+<sub>Above: web-optimized derivative of an actual 5168 × 2250 Unity gallery capture, not AI-generated material art. The original full-resolution source is preserved in the M1-H review archive. Greyscale review showed some identities still resemble each other at Hero distance.</sub>
+
+## 04 / Inside the system
+
+<table>
+<tr>
+<td width="50%" align="center"><img src="media/thickness-proxy.png" width="100%" alt="Thickness debug channel"/><br><sub>Thickness / absorption</sub></td>
+<td width="50%" align="center"><img src="media/refraction-debug.png" width="100%" alt="Screen-space refraction checker validation"/><br><sub>Refraction / debug evidence</sub></td>
+</tr>
+</table>
 
 ```mermaid
 flowchart LR
-  A["Material / Motion / Contact /<br/>Damage / Bubble profiles"] --> P["STMS preset + runtime binding"]
-  P --> MPB["Per-renderer MaterialPropertyBlock"]
-  MPB --> SH["STMS/Core<br/>thickness · absorption · refraction<br/>wet spec · artistic scatter"]
-  R["Spring + local contact + damage"] --> MPB
-  SH --> E["Beauty captures / debug views<br/>regression & determinism evidence"]
-  E -.->|controlled review| A
+    P["Authoring<br/>Material · Motion · Contact<br/>Damage · Internal Profiles"]
+    R["Runtime<br/>Spring · Contact · Recovery<br/>Preset / Subject Binding"]
+    S["Single STMS/Core Shader<br/>Absorption · Refraction<br/>Wet Highlight · Scattering"]
+    E["Evidence<br/>Beauty · Debug · Determinism<br/>Regression · Human Review"]
+    P --> R --> S --> E
+    E -. "controlled A/B feedback" .-> P
 ```
 
-**Engineering principles:** controlled candidate comparisons, stable evidence hashes, independent editor reruns, original-profile immutability, explicit technical limits. M1-H produced authentic 30-fps encoded sequences from 1/120-s simulation steps and captured renders — not generated intermediate frames.
+**Built to be audited:** real deterministic capture sequences, parameter traces, per-process comparisons, per-renderer MaterialPropertyBlocks, and explicit limits rather than unexplained “it works” claims.
 
-**Open engineering issue:** the M1-H historical regression ran 19/19 collectors without C#/shader errors, yet **66 locked rendered files did not reproduce byte-identically**. They are not silently re-locked or declared passed.
+[Technical breakdown](docs/technical-overview.md) &nbsp;·&nbsp; [Milestone status](docs/status.md) &nbsp;·&nbsp; [Media provenance](media/m1h/README.md)
 
-**Current research tracks:**
-- **Jelly:** M0–M1-G capabilities established; M1-H final-art review shows explicit visual gaps.
-- **Jellyfish / M2-A:** second-subject generalization is in progress; no final validated result is claimed on this page.
-- **Jelly Island × Water:** concept direction only. Integration readiness is **not met**; scale-aware thickness, transparency authority, runtime binding, assembly boundaries and GPU timing remain prerequisites.
+## 05 / The honest research record
 
-Read more: [Technical breakdown](docs/technical-overview.md) · [Milestone status](docs/status.md) · [M1-H visual review](docs/m1h-visual-review.md) · [Media attribution](docs/media-attribution.md).
+The latest M1-H pass produced a curated human-review package. It **did not** pass the final-art acceptance target: a beautiful render is not automatically a more physically or visually convincing material.
+
+| Visually established | Still being researched |
+|:--|:--|
+| Translucent jelly identity, authored looks, damped wobble | Close-up micro-surface detail — 8/8 macro candidates under threshold |
+| Continuous captured damage/recovery sequence | Visible local finger dent — 141/150 consecutive pairs identical in the diagnostic |
+| Repeatable candidate views and real frame provenance | Pulp/gel integration and bubbles with credible depth |
+| Four material profiles on one core | Progressive tear readability; single-pass sorting limitation |
+
+**Separate tracks, no premature claims**
+
+- **M1-H / Jelly** — engineering package and review complete; **final visual approval pending**.
+- **M1-I / Next R&D** — proposed study of tactile contact and microstructure, not an implemented release.
+- **M2-A / Jellyfish** — independent generalization research in progress; no new approved jellyfish Hero claimed here.
+- **Jelly Island × FluidMatter Water** — concept / readiness audit only; integration **not started**.
+- **GPU performance** — **UNMEASURED**; no device-FPS claims. Historical regression still has **66 unresolved rendered-file differences**.
+
+[Read the detailed M1-H visual review](docs/m1h-visual-review.md)
 
 ---
 
-<p align="center"><strong>STMS / Technical Art R&amp;D</strong><br/><sub>One shader core · authored identities · measurable evidence · visible limitations</sub></p>
+<div align="center">
 
-<sub>**Distribution:** public showcase and selected renders only. The Unity/Tuanjie project files, source assets, private evidence archives and third-party content are not redistributed. No open-source license is granted to the engine project. Tested context: Tuanjie 2022.3.62t16 / URP 14.2.0-t1.</sub>
+**STMS / Soft Translucent Material System**
+
+<sub>Technical Art · Real-Time Rendering · Materials · Interaction</sub>
+
+<sub>Evidence-first portfolio showcase. Real engine captures; no fabricated Unity stills or simulated performance claims.</sub>
+
+</div>
+
+<sub>Rendering context: Tuanjie 2022.3.62t16, URP 14.2.0-t1. This public repository publishes selected study images, documentation and captured animations, not the engine source or a licensed SDK.</sub>
