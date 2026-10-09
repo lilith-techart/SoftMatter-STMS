@@ -1,3 +1,7 @@
+> **PUBLISHED — 2026-10-09.** The M1-H binary media were uploaded directly and verified, and the image-first README was published in commit [88453c8](https://github.com/lilith-techart/SoftMatter-STMS/commit/88453c8498fc174935257cf52c3b4fcb08779f37). This document is retained as the historical publishing handoff; **do not re-run it as a new pending job**. The final public media index is [media/m1h/README.md](../media/m1h/README.md). The large four-preset gallery uses a web-optimized WebP instead of copying the 5.5 MB original. The original-source package remains unchanged.
+
+---
+
 # M1-H curated media — safe publishing handoff
 
 **Purpose:** publish a small, attractive *selection of original Unity/Tuanjie evidence* under `media/m1h/` without altering the source worktree or falsely approving M1-H visually.
