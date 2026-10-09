@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="410" viewBox="0 0 1280 410" role="img" aria-labelledby="t d">
+<title id="t">M1-H visual research review</title>
+<desc id="d">Three evidence-based verdicts: presentation improved, microstructure not met, lifecycle partial. Not a renderer capture.</desc>
+<rect width="1280" height="410" rx="18" fill="#151622"/>
+<text x="50" y="61" fill="#f5efff" font-size="29" font-family="Arial,sans-serif" font-weight="700">M1-H / Visual research checkpoint</text>
+<text x="50" y="92" fill="#a99eb8" font-size="16" font-family="Arial,sans-serif">Measured outcomes are shown alongside the work still needed.</text>
+<g font-family="Arial,sans-serif">
+<rect x="48" y="125" width="374" height="234" rx="18" fill="#232337" stroke="#51486a"/>
+<rect x="452" y="125" width="374" height="234" rx="18" fill="#232337" stroke="#51486a"/>
+<rect x="856" y="125" width="374" height="234" rx="18" fill="#232337" stroke="#51486a"/>
+<text x="74" y="176" font-size="16" fill="#b9a8d7" font-weight="700" letter-spacing="2">PRESENTATION</text>
+<text x="74" y="227" font-size="27" fill="#f6efff" font-weight="700">Improved</text>
+<text x="74" y="278" font-size="17" fill="#c9bfd9">Studio framing, art direction</text><text x="74" y="306" font-size="17" fill="#c9bfd9">and reproducible Hero shots</text>
+<text x="478" y="176" font-size="16" fill="#e3b3be" font-weight="700" letter-spacing="2">MICROSTRUCTURE</text>
+<text x="478" y="227" font-size="27" fill="#f6efff" font-weight="700">Not yet met</text>
+<text x="478" y="278" font-size="17" fill="#c9bfd9">8/8 macro views below the</text><text x="478" y="306" font-size="17" fill="#c9bfd9">project detail threshold</text>
+<text x="882" y="176" font-size="16" fill="#e6caa0" font-weight="700" letter-spacing="2">LIFECYCLE</text>
+<text x="882" y="227" font-size="27" fill="#f6efff" font-weight="700">Partial</text>
+<text x="882" y="278" font-size="17" fill="#c9bfd9">Recovery loops, but contact</text><text x="882" y="306" font-size="17" fill="#c9bfd9">and fracture need visual work</text>
+</g>
+<text x="50" y="391" fill="#9d92ae" font-size="15" font-family="Arial,sans-serif">Research capture reviewed 2026-10-09 · Engineering evidence ≠ final visual approval</text>
+</svg>

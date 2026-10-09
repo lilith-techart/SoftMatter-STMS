@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="390" viewBox="0 0 1400 390" role="img" aria-labelledby="t d">
+<title id="t">STMS — Soft Translucent Material System</title>
+<desc id="d">Editorial title banner for a technical art research project, not an engine render.</desc>
+<defs>
+ <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#111421"/><stop offset=".52" stop-color="#171827"/><stop offset="1" stop-color="#221c34"/></linearGradient>
+ <radialGradient id="orb" cx=".32" cy=".25" r=".8"><stop stop-color="#eee1ff" stop-opacity=".9"/><stop offset=".23" stop-color="#b3a0ed" stop-opacity=".63"/><stop offset=".57" stop-color="#7862bd" stop-opacity=".3"/><stop offset="1" stop-color="#4a3885" stop-opacity=".08"/></radialGradient>
+ <linearGradient id="rim" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#dbc5ff" stop-opacity=".74"/><stop offset=".5" stop-color="#ac97db" stop-opacity=".16"/><stop offset="1" stop-color="#ffdcfa" stop-opacity=".6"/></linearGradient>
+ <radialGradient id="glow"><stop stop-color="#b77fe6" stop-opacity=".23"/><stop offset="1" stop-color="#b77fe6" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="1400" height="390" fill="url(#bg)"/>
+<g opacity=".16" stroke="#c8b8ee" stroke-width=".7">
+ <path d="M0 90H1400M0 192H1400M0 294H1400M130 0V390M370 0V390M610 0V390M850 0V390M1090 0V390M1330 0V390"/>
+</g>
+<circle cx="1150" cy="178" r="260" fill="url(#glow)"/>
+<ellipse cx="1140" cy="197" rx="178" ry="138" fill="url(#orb)" stroke="url(#rim)" stroke-width="2"/>
+<path d="M1014 162c35-75 174-120 259-21" fill="none" stroke="#f1dfff" stroke-width="9" stroke-opacity=".47" stroke-linecap="round"/>
+<path d="M995 226c42 91 184 117 277 39" fill="none" stroke="#a98bdb" stroke-width="4" stroke-opacity=".26" stroke-linecap="round"/>
+<circle cx="1121" cy="191" r="13" fill="#faf2ff" fill-opacity=".23"/>
+<circle cx="1169" cy="226" r="7" fill="#faf2ff" fill-opacity=".33"/>
+<circle cx="1220" cy="178" r="10" fill="#faf2ff" fill-opacity=".13"/>
+<text x="88" y="100" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#cbbbec" letter-spacing="6">TECHNICAL ART  /  MATERIAL R&amp;D</text>
+<text x="84" y="235" font-family="Arial,sans-serif" font-size="143" font-weight="800" fill="#f6f1ff" letter-spacing="-8">STMS</text>
+<text x="91" y="289" font-family="Arial,sans-serif" font-size="30" font-weight="500" fill="#d7cee6" letter-spacing="1.6">Soft Translucent Material System</text>
+<text x="91" y="338" font-family="Arial,sans-serif" font-size="17" fill="#a99abb" letter-spacing=".9">LIGHT  /  DEFORMATION  /  INTERACTION  /  EVIDENCE</text>
+<path d="M87 365H1310" stroke="#d7c3f4" stroke-opacity=".25" stroke-width="1"/>
+</svg>
